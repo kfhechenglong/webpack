@@ -1,3 +1,4 @@
+var MyLibrary =
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -65,9 +66,25 @@
 /************************************************************************/
 /******/ ([
 /* 0 */
+/***/ (function(module, exports, __webpack_require__) {
+
+__webpack_require__(1);
+module.exports = __webpack_require__(2);
+
+
+/***/ }),
+/* 1 */
 /***/ (function(module, exports) {
 
-console.log("这是index.js")
+
+console.log("这是index-2.js")
+// 这是一行注释
+
+/***/ }),
+/* 2 */
+/***/ (function(module, exports) {
+
+console.log('这是index_content.js')
 
 /***/ })
 /******/ ]);
