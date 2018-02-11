@@ -1,6 +1,10 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+// bulid 之前先删除旧的打包文件
 const CleanWebpackPlugin = require('clean-webpack-plugin');
+// 删除export文件中未被引用的 模块
+// const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
+
 const webpack = require('webpack')
 module.exports = {
 	// entry:'./src/index.js',
@@ -26,7 +30,8 @@ module.exports = {
 		}),
 		new CleanWebpackPlugin(['dist']),
 		new webpack.NamedModulesPlugin(),
-		new webpack.HotModuleReplacementPlugin()
+		new webpack.HotModuleReplacementPlugin(),
+		// new UglifyJSPlugin()
   	],
 	module: {
 		rules:[
