@@ -7,11 +7,13 @@ const webpack = require('webpack')
 module.exports = {
 	entry: {
 		app: './src/index.js',
-		// another:'./src/another-module.js'
+		vendor:[
+			'lodash'
+		]
 	},
 	output: {
-		filename: '[name].bundle.js',
-		chunkFilename:'[name].bundle.js',
+		filename: '[name].[chunkhash].js',
+		// chunkFilename:'[name].js',
 		path: path.resolve(__dirname, 'dist')
 	},
 	plugins: [
@@ -19,8 +21,12 @@ module.exports = {
 			title: 'Production'
 		}),
 		new CleanWebpackPlugin(['dist']),
+		new webpack.HashedModuleIdsPlugin(),
 		new webpack.optimize.CommonsChunkPlugin({
-			name:'common'
+			name:'vendor'
+		}),
+		new webpack.optimize.CommonsChunkPlugin({
+			name:'manifest'
 		})
 	]
 
