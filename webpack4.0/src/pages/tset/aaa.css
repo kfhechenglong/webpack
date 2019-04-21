@@ -1,0 +1,10 @@
+body{
+    background: green;
+    border:1px solid #ccc;
+    border-radius: 10px;
+}
+div{
+    height: 100px;
+    width: 100px;
+    background: url(./../../static/images/login1.jpg);
+}
