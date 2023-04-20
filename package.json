@@ -1,25 +1,27 @@
 {
-  "name": "test",
+  "name": "webpack-demo",
   "version": "1.0.0",
-  "description": "rhis is deom",
-  "main": "webpack.config.js",
+  "description": "webpack案例",
+  "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "webpack": "webpack",
-    "dev": "webpack-dev-server --inline --hot",
-    "eslint": "eslint --init"
+    "start": "webpack --config webpack.config.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kfhechenglong/webpack.git"
+  },
+  "keywords": [
+    "webpack"
+  ],
   "author": "hechenglong",
   "license": "ISC",
-  "devDependencies": {
-    "copy-webpack-plugin": "^5.0.2",
-    "extract-text-webpack-plugin": "^3.0.2",
-    "glob": "^7.1.3",
-    "html-webpack-plugin": "^2.30.1",
-    "webpack": "^3.10.0",
-    "webpack-dev-server": "^2.9.7"
+  "bugs": {
+    "url": "https://github.com/kfhechenglong/webpack/issues"
   },
-  "dependencies": {
-    "mockjs": "^1.0.1-beta3"
+  "homepage": "https://github.com/kfhechenglong/webpack#readme",
+  "devDependencies": {
+    "webpack": "^5.80.0",
+    "webpack-cli": "^5.0.1"
   }
 }
