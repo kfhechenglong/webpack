@@ -179,3 +179,91 @@ module.exports = {
 ```
 然后需要在`package.json`中增加启动脚本`"serve": "webpack-dev-server"`，然后运行`npm run serve`本地即可启动一个端口为`9000`的服务，在浏览器中打开`http://localhost:9000/`就是现在开发的页面，同时也具有热更新的功能，每次修改完代码内容不再需要手动刷新浏览器页面。
 
+## webapck性能优化
+
+### 指定webpack处理文件的范围
+
+在一个大型的开发项目中，我们会用到各种插件、库，在webpack处理这些插件、库的时候可以做有针对性的选择，对一些库文件进行限定，进而提示webpack性能问题；
+
+#### loader的限定
+在使用`loader`的时候，我们一般会使用test来配置要处理的文件的类型，但是我们可以使用`include`和`exclude`来现在要处理的文件范围；
+```js
+module.exports = {
+  modules: {
+    rules: [
+      {
+        // 针对以.css后缀的文件
+        test: /\.css$/,
+        use: ['style-loader','css-loader'],
+        // 仅仅处理src下面的css文件
+        include: path.resolve(__dirname,'src')
+      }
+    ]
+  }
+}
+```
+#### 指定模块名后缀
+如果文件中导入未添加拓展名的模块时，`webpack`会根据`resolve.extensions`配置的后缀规则去检查文件是否存在。因为`resolve.extensions`配置是一个数组，所以我们应当将正确的后缀名放到前面（`.js`、`.ts`），优先匹配，减少匹配次数。
+```js
+module.exports = {
+  resolve: {
+    // 优先匹配js文件->ts文件->json文件
+    extensions: ['.js', '.ts', '.json']
+  }
+}
+```
+#### noParse配置
+使用`module.noParse`配置可以告诉webpack忽略哪些模块，例如：如果项目中引用的jq，则可以将jq配置进去，因为webpack完全没必要解析这种没有模块系统的文件
+
+```js
+module.exports = {
+  module: {
+    noParse: ['/jQuery/']
+  }
+}
+```
+
+#### IgnorePlugin
+该插件能够使得指定目录被忽略，从而使得打包变快，文件变小;
+```js
+module.exports = {
+  plugins: [
+    //moment这个库中，如果引用了./locale/目录的内容，就忽略掉，不会打包进去
+    new webpack.IgnorePlugin(/\.\/locale/,/moment/)
+  ]
+}
+```
+
+### 使用[DllPlugin](https://webpack.docschina.org/plugins/dll-plugin/)
+
+`DllPlugin` 和 `DllReferencePlugin` 用某种方法实现了拆分 `bundles`，同时还大幅度提升了构建的速度。`"DLL"`一词代表微软最初引入的动态链接库。一般需要将DLL配置成单独的构建文件，然后配合使用：
+- 通过使用`webpack.DLLPlugin`插件打包出DLL库；
+- 通过使用`webpack.DLLReferencePlugin`引用打包好的DLL库；
+
+创建`webpack.vendor.config.js`文件
+```js
+const path = require('path');
+module.exports = {
+  // 此处省略入口和出口项配置
+  plugins: [
+    new webpack.DllPlugin({
+      name: '[name]_[fullhash]',
+      path: path.join(__dirname, 'dist' 'manifest.json'),
+    });
+  ]
+}
+```
+创建修改`webpack.config.js`文件
+
+```js
+module.exports = {
+  // 此处省略入口和出口项配置
+  plugins: [
+    new webpack.DllReferencePlugin({
+      // 已打包好的清单文件路径
+      manifest: path.join(__dirname, 'dist' 'manifest.json'),
+    });
+  ]
+}
+```
+构建时，我们应该先构建`webpack.vendor.config.js`再构建`webpack.config.js`文件
