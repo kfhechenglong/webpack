@@ -1,0 +1,13 @@
+lockfileVersion: '6.0'
+
+dependencies:
+  loader-utils:
+    specifier: ^3.2.1
+    version: 3.2.1
+
+packages:
+
+  /loader-utils@3.2.1:
+    resolution: {integrity: sha512-ZvFw1KWS3GVyYBYb7qkmRM/WwL2TQQBxgCK62rlvm4WpVQ23Nb4tYjApUlfjrEGvOs7KHEsmyUn75OHZrJMWPw==}
+    engines: {node: '>= 12.13.0'}
+    dev: false
